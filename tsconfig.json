@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "lib": ["ES6"],
+    "module": "CommonJS",
+    "target": "ES2021",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": [
+      "bun-types" // add Bun global
+    ],
+    "baseUrl": "./src",
+    "paths": {
+      "@controllers": ["controllers"],
+      "@controllers/*": ["controllers/*"],
+      "@middlewares": ["middlewares"],
+      "@middlewares/*": ["middlewares/*"],
+      "@repositories": ["repositories"],
+      "@repositories/*": ["repositories/*"],
+      "@routes": ["routes"],
+      "@routes/*": ["routes/*"],
+      "@services": ["services"],
+      "@services/*": ["services/*"],
+      "@utils": ["utils"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
