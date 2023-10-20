@@ -1,9 +1,8 @@
 import { Router } from "express";
+import userRouter from "./userRouter";
 
 const router = Router();
 
-router.get("/test", async (req, res) => {
-  return res.json({ message: "Rota de teste" }).status(200);
-});
+router.use("/v1/user", userRouter);
 
 export default router;
