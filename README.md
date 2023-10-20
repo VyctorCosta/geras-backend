@@ -20,10 +20,28 @@ Para instalar as dependências:
 bun install
 ```
 
-Para executar:
+Para iniciar o banco de dados crie e preencha o arquivo .env usando o .env.example como base e rode o seguinte comando:
 
 ```bash
-bun run index.ts
+bun run start
+```
+
+Ou para iniciar o banco de dados em background:
+
+```bash
+bun run start:detach
+```
+
+Após o banco estiver criado e rodando execute o seguinte comando para rodar as "migrations" e criar as tabelas:
+
+```bash
+bun run migrate
+```
+
+Por fim rode o comando abaixo para iniciar o servidor:
+
+```bash
+bun run dev
 ```
 
 Este projeto foi criado usando `bun init` na versão v1.0.0. [Bun](https://bun.sh) é um compilador JavaScript "all-in-one".
