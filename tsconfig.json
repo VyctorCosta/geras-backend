@@ -13,8 +13,12 @@
     ],
     "baseUrl": "./src",
     "paths": {
+      "@config": ["config"],
+      "@config/*": ["config/*"],
       "@controllers": ["controllers"],
       "@controllers/*": ["controllers/*"],
+      "@dtos": ["dtos"],
+      "@dtos/*": ["dtos/*"],
       "@middlewares": ["middlewares"],
       "@middlewares/*": ["middlewares/*"],
       "@repositories": ["repositories"],

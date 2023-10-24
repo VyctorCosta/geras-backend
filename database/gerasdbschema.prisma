@@ -11,6 +11,6 @@ model tb_user {
   id       String   @id @db.Uuid
   name     String   @db.VarChar(50)
   birthage DateTime @db.Date
-  email    String   @db.VarChar(50)
+  email    String   @unique @db.VarChar(50)
   password String   @db.Text
 }
