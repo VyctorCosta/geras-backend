@@ -1,4 +1,4 @@
-import type { ErrorRequestHandler } from "express";
+import { ErrorRequestHandler } from "express";
 
 interface Error {
   type: string;
@@ -6,7 +6,7 @@ interface Error {
 }
 
 //422
-export function unprocessableError(error: string[]): Error {
+export function unprocessableError(error: string): Error {
   return { type: "error_unprocessable_entity", message: error };
 }
 
@@ -66,7 +66,7 @@ export function notAcceptableError(value: string): Error {
   };
 }
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
   if (err.type === "error_unprocessable_entity") {
     return res.status(422).json({ message: err.message });
   }

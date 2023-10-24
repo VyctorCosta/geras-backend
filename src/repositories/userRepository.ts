@@ -9,13 +9,22 @@ class userRepository {
       await prisma.tb_user.create({
         data: user,
       });
-    } catch (err: any) {
+    } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.message.split("\n").at(-1) == "Unique constraint failed on the fields: (`email`)") {
           throw conflictError("Email");
         }
       }
     }
+  }
+
+  public async getUserByLogin(login: string): Promise<UserType | null> {
+    const user = await prisma.tb_user.findUnique({
+      where: {
+        email: login,
+      },
+    });
+    return user;
   }
 }
 
