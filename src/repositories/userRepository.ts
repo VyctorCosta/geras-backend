@@ -19,7 +19,7 @@ class userRepository {
   }
 
   public async getUserByLogin(login: string): Promise<UserType | null> {
-    const user = await prisma.tb_user.findUnique({
+    const user = await prisma.tb_user.findFirst({
       where: {
         email: login,
       },
