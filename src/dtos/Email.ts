@@ -21,8 +21,7 @@ export const CreateEmailDto = Joi.object<EmailType>()
 
 export const LoginEmailDto = Joi.object()
   .keys({
-    login: Joi.string().email().required(),
-    loginPhone: Joi.string().length(11).pattern(/^[0-9]+$/),
+    login: Joi.string().pattern(/^(?:\d{1,11}|[\w-\.]+@([\w-]+\.)+[\w-]{2,4})$/).required(),
     password: Joi.string().required(),
   })
   .options({ abortEarly: true });
