@@ -8,6 +8,26 @@ export type UserType = {
   password: string;
 };
 
+export type CreateUserDtoType = {
+  name: string;
+  birthage: string;
+  email: string;
+  password: string;
+};
+
+export type UserContactType = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+};
+
+export type CreateUserContactDto = {
+  first_name: string;
+  last_name: string;
+  phone: string;
+};
+
 export const CreateUserDto = Joi.object<UserType>()
   .keys({
     name: Joi.string().max(50).required(),
@@ -23,3 +43,13 @@ export const LoginUserDto = Joi.object()
     password: Joi.string().required(),
   })
   .options({ abortEarly: true });
+
+export const CreateUserContactDto = Joi.object<UserContactType>().keys({
+  first_name: Joi.string().max(50).required(),
+  last_name: Joi.string().max(50).required(),
+  phone: Joi.string()
+    .max(18)
+    .regex(/^\+\d{2} \d{2} \d \d{4}-\d{4}$/)
+    .message("phone is invalid")
+    .required(),
+});

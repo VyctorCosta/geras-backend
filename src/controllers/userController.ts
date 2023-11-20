@@ -1,13 +1,11 @@
 import userService from "@services/userService";
-import { UserType } from "dtos/User";
+import { CreateUserContactDto, CreateUserDtoType, UserType } from "dtos/User";
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
+import jwt from "jsonwebtoken";
 
 class userController {
   public async createUser(req: Request, res: Response) {
-    const body = req.body as UserType;
-    body.id = uuidv4();
-    body.birthage = new Date(body.birthage);
+    const body = req.body as CreateUserDtoType;
 
     await userService.createUser(body);
 
@@ -22,8 +20,23 @@ class userController {
     return res.status(200).json({ access_token: token });
   }
 
-  public async testToken(_: Request, res: Response) {
-    return res.sendStatus(200);
+  public async createContact(req: Request, res: Response) {
+    const body = req.body as CreateUserContactDto;
+    const token = req.headers.authorization!.replace("Bearer ", "");
+    const user = jwt.decode(token) as UserType;
+
+    await userService.createUserContact(body, user.id);
+
+    return res.sendStatus(201);
+  }
+
+  public async getAllContacts(req: Request, res: Response) {
+    const token = req.headers.authorization!.replace("Bearer ", "");
+    const user = jwt.decode(token) as UserType;
+
+    const userContacts = await userService.getUserContacts(user.id);
+
+    return res.status(200).json(userContacts);
   }
 }
 
