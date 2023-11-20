@@ -8,7 +8,6 @@ class emailController {
     const body = req.body as EmailType;
     body.id = uuidv4();
 
-
     await emailService.createEmail(body);
 
     return res.sendStatus(201);
@@ -23,6 +22,14 @@ class emailController {
   }
 
   public async testToken(_: Request, res: Response) {
+    return res.sendStatus(200);
+  }
+
+  public async resetPassword(req: Request, res: Response) {
+    const body = req.body as { email: string };
+
+    await emailService.resetPassword(body.email);
+
     return res.sendStatus(200);
   }
 }

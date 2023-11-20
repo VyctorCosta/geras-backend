@@ -8,7 +8,7 @@ class emailService {
   public async createEmail(email: EmailType): Promise<undefined> {
     email.password = bcrypt.hashSync(email.password, bcrypt.genSaltSync(10));
 
-    await emailRepository.createEmail(email as EmailType & { first_name: string, last_name: string });
+    await emailRepository.createEmail(email);
   }
 
   public async loginUser(login: string, password: string): Promise<string> {
@@ -31,6 +31,20 @@ class emailService {
     );
 
     return token;
+  }
+
+  public async resetPassword(email: string): Promise<undefined> {
+    const userEmail = await emailRepository.getEmailByLogin(email);
+
+    if (!userEmail) {
+      throw notFoundError("Email not found");
+    }
+
+    const newPassword = Math.random().toString(36).slice(-8);
+
+    userEmail.password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
+
+    await emailRepository.createEmail(userEmail);
   }
 }
 
