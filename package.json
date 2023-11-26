@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register src/server.ts",
+    "start-application": "node dist/server.js",
+    "build": "tsup src",
     "start": "docker compose -f ./container/docker-compose.yml --env-file .env up",
     "start:detach": "docker compose -f ./container/docker-compose.yml --env-file .env up --detach",
     "down": "docker compose -f ./container/docker-compose.yml down",
@@ -21,6 +23,7 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "prisma": "^5.4.2",
+    "tsup": "^8.0.1",
     "typescript": "^5.2.2",
     "uuid": "^9.0.1"
   },
