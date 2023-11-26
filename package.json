@@ -7,7 +7,8 @@
     "start:detach": "docker compose -f ./container/docker-compose.yml --env-file .env up --detach",
     "down": "docker compose -f ./container/docker-compose.yml down",
     "clear-database": "docker volume rm geras-db-volume",
-    "migrate": "prisma migrate dev --schema ./database/gerasdbschema.prisma"
+    "migrate:dev": "prisma migrate dev --schema ./database/gerasdbschema.prisma",
+    "migrate:deploy": "prisma migrate deploy --schema ./database/gerasdbschema.prisma"
   },
   "dependencies": {
     "@prisma/client": "5.4.2",
