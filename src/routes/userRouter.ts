@@ -6,14 +6,22 @@ import { Router } from "express";
 
 const userRouter = Router();
 
-userRouter.post("/create", validateDtoMiddleware(CreateUserDto), userController.createUser);
-userRouter.post("/login", validateDtoMiddleware(LoginUserDto), userController.loginUser);
+userRouter.post(
+  "/create",
+  validateDtoMiddleware(CreateUserDto),
+  userController.createUser.bind(userController),
+);
+userRouter.post(
+  "/login",
+  validateDtoMiddleware(LoginUserDto),
+  userController.loginUser.bind(userController),
+);
 userRouter.post(
   "/create-contact",
   validateToken,
   validateDtoMiddleware(CreateUserContactDto),
-  userController.createContact,
+  userController.createContact.bind(userController),
 );
-userRouter.get("/contacts", validateToken, userController.getAllContacts);
+userRouter.get("/contacts", validateToken, userController.getAllContacts.bind(userController));
 
 export default userRouter;

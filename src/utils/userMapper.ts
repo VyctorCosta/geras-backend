@@ -15,7 +15,7 @@ class userMapper {
     };
   }
 
-  public DtoToUserContact(userContactDto: CreateUserContactDto): UserContactType {
+  public DtoToUserContact(userContactDto: CreateUserContactDto, userId: string): UserContactType {
     const id = uuidv4();
 
     return {
@@ -23,6 +23,7 @@ class userMapper {
       first_name: userContactDto.first_name,
       last_name: userContactDto.last_name,
       phone: userContactDto.phone,
+      user_id: userId,
     };
   }
 }
