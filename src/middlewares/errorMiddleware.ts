@@ -2,71 +2,90 @@ import { ErrorRequestHandler } from "express";
 
 interface Error {
   type: string;
-  message: string | string[];
+  message: string;
 }
 
 //422
-export function unprocessableError(error: string): Error {
-  return { type: "error_unprocessable_entity", message: error };
+export class UnprocessableError implements Error {
+  public type = "error_unprocessable_entity";
+  public message: string;
+
+  constructor(error: string) {
+    this.message = error;
+  }
 }
 
 //401
-export function missingHeaderError(header: string): Error {
-  return {
-    type: "error_unauthorized",
-    message: header,
-  };
+export class MissingHeaderError implements Error {
+  public type = "error_unauthorized";
+  public message: string;
+
+  constructor(header: string) {
+    this.message = header;
+  }
 }
 
 //404
-export function notFoundError(value: string): Error {
-  return {
-    type: "error_not_found",
-    message: `Could not find specified ${value}`,
-  };
+export class NotFoundError implements Error {
+  public type = "error_not_found";
+  public message: string;
+
+  constructor(value: string) {
+    this.message = `Could not find specified ${value}`;
+  }
 }
 
 //409
-export function conflictError(value: string): Error {
-  return {
-    type: "error_conflict",
-    message: `${value} already exists`,
-  };
+export class ConflictError implements Error {
+  public type = "error_conflict";
+  public message: string;
+
+  constructor(value: string) {
+    this.message = `${value} already exists`;
+  }
 }
 
 //403
-export function accessDeniedError(value: string): Error {
-  return {
-    type: "error_access_denied",
-    message: `Unable to ${value}`,
-  };
+export class AccessDeniedError implements Error {
+  public type = "error_access_denied";
+  public message: string;
+
+  constructor(value: string) {
+    this.message = `Unable to ${value}`;
+  }
 }
 
 //401
-export function unauthorizedError(value: string): Error {
-  return {
-    type: "error_unauthorized",
-    message: `${value} is invalid`,
-  };
+export class UnauthorizedError implements Error {
+  public type = "error_unauthorized";
+  public message: string;
+
+  constructor(value: string) {
+    this.message = `${value} is invalid`;
+  }
 }
 
 //400
-export function badRequestError(value: string): Error {
-  return {
-    type: "error_bad_request",
-    message: `${value}`,
-  };
+export class BadRequestError implements Error {
+  public type = "error_bad_request";
+  public message: string;
+
+  constructor(value: string) {
+    this.message = value;
+  }
 }
 
 //406
-export function notAcceptableError(value: string): Error {
-  return {
-    type: "error_not_acceptable",
-    message: `${value}`,
-  };
+export class NotAcceptableError implements Error {
+  public type = "error_not_acceptable";
+  public message: string;
+
+  constructor(value: string) {
+    this.message = value;
+  }
 }
 
-const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
+const errorHandler: ErrorRequestHandler = (err: Error, _, res, __) => {
   if (err.type === "error_unprocessable_entity") {
     return res.status(422).json({ message: err.message });
   }

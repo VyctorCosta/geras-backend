@@ -1,26 +1,32 @@
-import { accessDeniedError, notFoundError } from "@middlewares/errorMiddleware";
-import userRepository from "@repositories/userRepository";
+import { NotFoundError, AccessDeniedError } from "@middlewares/errorMiddleware";
+import { IUserRepository } from "@repositories/userRepository";
 import userMapper from "@utils/userMapper";
 import bcrypt from "bcryptjs";
 import { CreateUserContactDto, CreateUserDtoType, UserContactType } from "dtos/User";
 import jwt from "jsonwebtoken";
 
-class userService {
+export default class UserService {
+  private userRepository: IUserRepository;
+
+  constructor(userRepository: IUserRepository) {
+    this.userRepository = userRepository;
+  }
+
   public async createUser(createUserDto: CreateUserDtoType): Promise<void> {
     const user = userMapper.DtoToUser(createUserDto);
 
-    await userRepository.createUser(user);
+    await this.userRepository.createUser(user);
   }
 
   public async loginUser(login: string, password: string): Promise<string> {
-    const user = await userRepository.getUserByLogin(login);
+    const user = await this.userRepository.getUserByLogin(login);
 
     if (!user) {
-      throw notFoundError("Email");
+      throw new NotFoundError("Email");
     }
 
     if (!bcrypt.compareSync(password, user.password)) {
-      throw accessDeniedError("login because password is wrong");
+      throw new AccessDeniedError("login because password is wrong");
     }
 
     const token = jwt.sign(
@@ -40,18 +46,16 @@ class userService {
   ): Promise<void> {
     const userContact = userMapper.DtoToUserContact(createUserContactDto);
 
-    await userRepository.createUserContact(userContact, userId);
+    await this.userRepository.createUserContact(userContact, userId);
   }
 
   public async getUserContacts(userId: string): Promise<UserContactType[]> {
-    const userContacts = await userRepository.getUserContacts(userId);
+    const userContacts = await this.userRepository.getUserContacts(userId);
 
     if (userContacts === null) {
-      throw notFoundError("User");
+      throw new NotFoundError("User");
     }
 
     return userContacts;
   }
 }
-
-export default new userService();
