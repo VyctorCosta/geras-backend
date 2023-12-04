@@ -11,6 +11,7 @@
     "clear-database": "docker volume rm geras-db-volume",
     "migrate:dev": "prisma migrate dev --schema ./database/gerasdbschema.prisma",
     "migrate:deploy": "prisma migrate deploy --schema ./database/gerasdbschema.prisma",
+    "studio": "prisma studio --schema ./database/gerasdbschema.prisma",
     "test": "vitest",
     "lint": "eslint src"
   },
@@ -23,7 +24,7 @@
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "joi": "^17.11.0",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "8.5.1",
     "prisma": "^5.4.2",
     "tsup": "^8.0.1",
     "typescript": "^5.2.2",

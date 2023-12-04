@@ -6,12 +6,12 @@ import { UserContactType, UserType } from "dtos/User";
 export interface IUserRepository {
   createUser(user: UserType): Promise<void>;
   getUserByLogin(login: string): Promise<UserType | null>;
-  createUserContact(userContact: UserContactType, userId: string): Promise<void>;
+  createUserContact(userContact: UserContactType): Promise<void>;
   getUserContacts(userId: string): Promise<UserContactType[] | null>;
 }
 
 export default class UserRepository implements IUserRepository {
-  public async createUser(user: UserType): Promise<void> {
+  public async createUser({ contacts: _, ...user }: UserType): Promise<void> {
     try {
       await prisma.tb_user.create({
         data: user,
@@ -28,22 +28,23 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async getUserByLogin(login: string): Promise<UserType | null> {
-    const user = await prisma.tb_user.findFirst({
+    const user = (await prisma.tb_user.findFirst({
       where: {
         email: login,
       },
-    });
+    })) as UserType;
+
     return user;
   }
 
-  public async createUserContact(userContact: UserContactType, userId: string): Promise<void> {
-    const data = { ...userContact, user_id: userId };
+  public async createUserContact(userContact: UserContactType): Promise<void> {
+    const data = userContact;
 
     try {
-      const user = await prisma.tb_contact_user.findFirst({
+      const contact = await prisma.tb_contact_user.findFirst({
         where: { first_name: userContact.first_name, last_name: userContact.last_name },
       });
-      if (user !== null) {
+      if (contact !== null) {
         throw new Error("contact_already_exists");
       }
 

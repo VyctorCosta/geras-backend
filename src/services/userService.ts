@@ -1,4 +1,4 @@
-import { NotFoundError, AccessDeniedError } from "@middlewares/errorMiddleware";
+import { AccessDeniedError, NotFoundError } from "@middlewares/errorMiddleware";
 import { IUserRepository } from "@repositories/userRepository";
 import userMapper from "@utils/userMapper";
 import bcrypt from "bcryptjs";
@@ -44,9 +44,9 @@ export default class UserService {
     createUserContactDto: CreateUserContactDto,
     userId: string,
   ): Promise<void> {
-    const userContact = userMapper.DtoToUserContact(createUserContactDto);
+    const userContact = userMapper.DtoToUserContact(createUserContactDto, userId);
 
-    await this.userRepository.createUserContact(userContact, userId);
+    await this.userRepository.createUserContact(userContact);
   }
 
   public async getUserContacts(userId: string): Promise<UserContactType[]> {

@@ -4,9 +4,14 @@ import { CreateUserContactDto, CreateUserDtoType, UserType } from "dtos/User";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-class userController {
-  private userRepository = new UserRepository();
-  private userService = new UserService(this.userRepository);
+class UserController {
+  private userRepository: UserRepository;
+  private userService: UserService;
+
+  constructor() {
+    this.userRepository = new UserRepository();
+    this.userService = new UserService(this.userRepository);
+  }
 
   public async createUser(req: Request, res: Response) {
     const body = req.body as CreateUserDtoType;
@@ -44,4 +49,4 @@ class userController {
   }
 }
 
-export default new userController();
+export default new UserController();
