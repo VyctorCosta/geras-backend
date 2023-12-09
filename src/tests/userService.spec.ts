@@ -2,8 +2,7 @@ import { CreateUserContactDto, CreateUserDtoType, UserType } from "@dtos/User";
 import { AccessDeniedError, ConflictError, NotFoundError } from "@middlewares/errorMiddleware";
 import { InMemoryUserRepository } from "@repositories/inMemory/inMemoryUserRepository";
 import isJwtToken from "@utils/isJwtToken";
-import { describe } from "bun:test";
-import { afterEach, beforeEach, expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it, describe } from "vitest";
 import UserService from "../services/userService";
 
 describe("create user", () => {
