@@ -25,7 +25,7 @@ export const CreateEmailDto = Joi.object<EmailType>()
 export const LoginEmailDto = Joi.object()
   .keys({
     login: Joi.string()
-      .pattern(/^(?:\d{1,11}|[\w-.]+@([\w-]+\.)+[\w-]{2,4})$/)
+      .pattern(/^(?:\d{9,11}|[\w-.]+@([\w-]+\.)+[\w-]{2,4})$/)
       .message("Login must be a valid email or phone number")
       .required(),
     password: Joi.string().required(),
