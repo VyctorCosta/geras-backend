@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register src/server.ts",
+    "start-application": "node dist/server.js",
+    "build": "tsup src",
     "start": "docker compose -f ./container/docker-compose.yml --env-file .env up",
     "start:detach": "docker compose -f ./container/docker-compose.yml --env-file .env up --detach",
     "down": "docker compose -f ./container/docker-compose.yml down",
     "clear-database": "docker volume rm geras-db-volume",
-    "migrate": "prisma migrate dev --schema ./database/gerasdbschema.prisma"
+    "migrate:dev": "prisma migrate dev --schema ./database/gerasdbschema.prisma",
+    "migrate:deploy": "prisma migrate deploy --schema ./database/gerasdbschema.prisma",
+    "studio": "prisma studio --schema ./database/gerasdbschema.prisma",
+    "test": "vitest",
+    "lint": "eslint src"
   },
   "dependencies": {
     "@prisma/client": "5.4.2",
@@ -18,8 +24,9 @@
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "joi": "^17.11.0",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "8.5.1",
     "prisma": "^5.4.2",
+    "tsup": "^8.0.1",
     "typescript": "^5.2.2",
     "uuid": "^9.0.1"
   },
@@ -37,7 +44,8 @@
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "vitest": "^0.34.6"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

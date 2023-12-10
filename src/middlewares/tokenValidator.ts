@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { missingHeaderError, unauthorizedError } from "@middlewares/errorMiddleware";
+import { MissingHeaderError, UnauthorizedError } from "@middlewares/errorMiddleware";
 
 dotenv.config();
 
@@ -11,7 +11,7 @@ export async function validateToken(req: Request, res: Response, next: NextFunct
   const secretKey = process.env.JWT_SECRET;
 
   if (secretKey === undefined || token === undefined) {
-    throw missingHeaderError("Authorization is missing");
+    throw new MissingHeaderError("Authorization is missing");
   }
 
   try {
@@ -21,6 +21,6 @@ export async function validateToken(req: Request, res: Response, next: NextFunct
 
     next();
   } catch {
-    throw unauthorizedError("Token");
+    throw new UnauthorizedError("Token");
   }
 }

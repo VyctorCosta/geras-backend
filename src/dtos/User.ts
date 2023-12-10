@@ -6,6 +6,7 @@ export type UserType = {
   birthage: Date;
   email: string;
   password: string;
+  contacts: UserContactType[];
 };
 
 export type CreateUserDtoType = {
@@ -20,6 +21,7 @@ export type UserContactType = {
   first_name: string;
   last_name: string;
   phone: string;
+  user_id: string;
 };
 
 export type CreateUserContactDto = {
