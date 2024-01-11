@@ -1,14 +1,21 @@
-import emailService from "@services/emailService";
-import { EmailType } from "dtos/Email";
+import EmailRepository from "@repositories/emailRepository";
+import EmailService from "@services/emailService";
+import { CreateEmailDtoType } from "dtos/Email";
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 
-class emailController {
+class EmailController {
+  private emailRepository: EmailRepository;
+  private emailService: EmailService;
+
+  constructor() {
+    this.emailRepository = new EmailRepository();
+    this.emailService = new EmailService(this.emailRepository);
+  }
+
   public async createEmail(req: Request, res: Response) {
-    const body = req.body as EmailType;
-    body.id = uuidv4();
+    const body = req.body as CreateEmailDtoType;
 
-    await emailService.createEmail(body);
+    await this.emailService.createEmail(body);
 
     return res.sendStatus(201);
   }
@@ -16,7 +23,7 @@ class emailController {
   public async loginEmail(req: Request, res: Response) {
     const body = req.body as { login: string; password: string };
 
-    const token = await emailService.loginUser(body.login, body.password);
+    const token = await this.emailService.loginUser(body.login, body.password);
 
     return res.status(200).json({ access_token: token });
   }
@@ -28,10 +35,10 @@ class emailController {
   public async resetPassword(req: Request, res: Response) {
     const body = req.body as { email: string };
 
-    await emailService.resetPassword(body.email);
+    await this.emailService.resetPassword(body.email);
 
     return res.sendStatus(200);
   }
 }
 
-export default new emailController();
+export default new EmailController();

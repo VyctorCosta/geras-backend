@@ -9,6 +9,12 @@ export type EmailType = {
   password: string;
 };
 
+export type CreateEmailDtoType = {
+  email: string;
+  phone: string;
+  password: string;
+};
+
 export const CreateEmailDto = Joi.object<EmailType>()
   .keys({
     name: Joi.string().max(50).required(),

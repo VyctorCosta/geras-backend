@@ -1,9 +1,14 @@
 import prisma from "@config/database";
-import { conflictError } from "@middlewares/errorMiddleware";
+import { ConflictError } from "@middlewares/errorMiddleware";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { EmailType } from "dtos/Email";
 
-class emailRepository {
+export interface IEmailRepository {
+  createEmail(emailUser: EmailType): Promise<void>;
+  getEmailByLogin(login: string): Promise<EmailType | null>;
+}
+
+export default class emailRepository implements IEmailRepository {
   public async createEmail(emailUser: EmailType): Promise<undefined> {
     try {
       await prisma.tb_contact_user.create({
@@ -19,7 +24,7 @@ class emailRepository {
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.message.split("\n").at(-1) == "Unique constraint failed on the fields: (`email`)") {
-          throw conflictError("Email");
+          throw new ConflictError("Email");
         }
       }
     }
@@ -44,5 +49,3 @@ class emailRepository {
     return null;
   }
 }
-
-export default new emailRepository();
