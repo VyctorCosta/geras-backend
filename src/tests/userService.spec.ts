@@ -90,6 +90,20 @@ describe("login user", () => {
   });
 });
 
+describe("Login user dto", () => {
+  const userRepository = new InMemoryUserRepository();
+  const userService = new UserService(userRepository);
+
+  it("should create a login user DTO", () => {
+    const user = {
+      login: "johndoe",
+      password: "123456",
+    };
+
+    expect(userService.loginUserDto(user.login, user.password)).toEqual(user);
+  });
+});
+
 describe("create user contact", () => {
   const userRepository = new InMemoryUserRepository();
   const userService = new UserService(userRepository);
@@ -226,5 +240,81 @@ describe("get user contact", () => {
     const userId = "f577559c-1efd-4478-a4e1-ccd697226eb4";
 
     expect(userService.getUserContacts(userId)).rejects.toBeInstanceOf(NotFoundError);
+  });
+});
+
+// describe("create user contact dto", () => {
+//   const userRepository = new InMemoryUserRepository();
+//   const userService = new UserService(userRepository);
+
+//   beforeEach(() => {
+//     userRepository.resetDatabase();
+//   });
+
+//   it("should create a user contact successfully", () => {
+//     const user: CreateUserDtoType = {
+//       name: "John Doe",
+//       birthage: "1998-06-02",
+//       email: "johndoe@email.com",
+//       password: "123456",
+//     };
+
+//     userService.createUser(user);
+
+//     const userContact: CreateUserContactDto = {
+//       first_name: "Perry",
+//       last_name: "Morar",
+//       phone: "+55 81 9 8887-6356",
+//     };
+
+//     expect(userService.createUserContact(userContact, user.id)).resolves.not.toBeInstanceOf(Error);
+//     expect(userRepository.tb_contact_user.length).toEqual(1);
+//   });
+
+//   it("should cannot create a contact because it already exists", async () => {
+//     const user: CreateUserDtoType = {
+//       name: "John Doe",
+//       birthage: "1998-06-02",
+//       email: "johndoe@email.com",
+//       password: "123456",
+//     };
+
+//     userService.createUser(user);
+
+//     const userContact: CreateUserContactDto = {
+//       first_name: "Perry",
+//       last_name: "Morar",
+//       phone: "+55 81 9 8887-6356",
+//     };
+
+//     await userService.createUserContact(userContact, user.id);
+
+//     const wrongContact: CreateUserContactDto = {
+//       first_name: "Perry",
+//       last_name: "Morar",
+//       phone: "+55 81 9 9992-5432",
+//     };
+
+//     expect(userService.createUserContact(wrongContact, user.)).rejects.toBeInstanceOf(
+//       ConflictError,
+//     );
+//     expect(userRepository.tb_contact_user.length).toEqual(1);
+//   });
+// });
+
+describe("create user contact dto", () => {
+  const userRepository = new InMemoryUserRepository();
+  const userService = new UserService(userRepository);
+
+  it("should create a user contact DTO", () => {
+    const createUserContactDto: CreateUserContactDto = {
+      first_name: "John",
+      last_name: "Doe",
+      phone: "1234567890",
+    };
+
+    expect(userService.createUserContactDto(createUserContactDto, "userId")).toEqual(
+      createUserContactDto,
+    );
   });
 });

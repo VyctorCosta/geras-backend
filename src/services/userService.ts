@@ -40,6 +40,28 @@ export default class UserService {
     return token;
   }
 
+  public async loginUserDto(login: string, password: string): Promise<string> {
+    const user = await this.userRepository.getUserByLogin(login);
+
+    if (!user) {
+      throw new NotFoundError("Email");
+    }
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      throw new AccessDeniedError("login because password is wrong");
+    }
+
+    const token = jwt.sign(
+      { id: user.id, name: user.name, email: user.email },
+      String(process.env.JWT_SECRET),
+      {
+        expiresIn: "72h",
+      },
+    );
+
+    return token;
+  }
+
   public async createUserContact(
     createUserContactDto: CreateUserContactDto,
     userId: string,
@@ -57,5 +79,12 @@ export default class UserService {
     }
 
     return userContacts;
+  }
+  public async createUserContactDto(
+    createUserContactDto: CreateUserContactDto,
+    userId: string,
+  ): Promise<void> {
+    const userContact = userMapper.DtoToUserContact(createUserContactDto, userId);
+    await this.userRepository.createUserContact(userContact);
   }
 }
